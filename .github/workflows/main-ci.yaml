@@ -1,0 +1,53 @@
+name: main-ci
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        # Ideally we would be able to run on both ubuntu and macos, but it
+        # turns out that running on mac is 10x as expensive. Since we rerun pr
+        # ci on every change to a pr, this can quickly balloon. For now, we
+        # remove macos from the os matrix. If we ever want to add it back, we
+        # can simply add macos-latest to the array below.
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      # Fetch the base ref for this PR so that we can identify which packages
+      # have changed in the PR.
+      - name: Fetch the PR base ref
+        run: |
+          git fetch --no-tags --prune --depth=1 origin "+refs/heads/${GITHUB_BASE_REF}:refs/remotes/origin/${GITHUB_BASE_REF}"
+
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Restore lerna deps (cache)
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm run initialize-ci
+
+      - name: Build
+        run: npm run build -- --since "origin/${GITHUB_BASE_REF}"
+
+      - name: Lint
+        run: npm run lint -- --since "origin/${GITHUB_BASE_REF}"
+
+      - name: Test
+        run: npm run test -- --since "origin/${GITHUB_BASE_REF}"
