@@ -23,12 +23,6 @@ jobs:
         with:
           lfs: true
 
-      # Fetch the base ref for this PR so that we can identify which packages
-      # have changed in the PR.
-      - name: Fetch the PR base ref
-        run: |
-          git fetch --no-tags --prune --depth=1 origin "+refs/heads/${GITHUB_BASE_REF}:refs/remotes/origin/${GITHUB_BASE_REF}"
-
       - name: Set up node
         uses: actions/setup-node@v4
         with:
@@ -44,10 +38,10 @@ jobs:
         run: npm run initialize-ci
 
       - name: Build
-        run: npm run build -- --since "origin/${GITHUB_BASE_REF}"
+        run: npm run build
 
       - name: Lint
-        run: npm run lint -- --since "origin/${GITHUB_BASE_REF}"
+        run: npm run lint
 
       - name: Test
-        run: npm run test -- --since "origin/${GITHUB_BASE_REF}"
+        run: npm run test
