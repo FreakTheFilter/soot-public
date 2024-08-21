@@ -80,7 +80,7 @@
     // Enumerates all files which would alter the build result of a package.
     // Note that this list needs to be valid for libraries, node binaries, and
     // frontends. As a result, it's a union of all build patterns we use across
-    // hearth.
+    // soot
     "buildSourcesOnly": [
       "{projectRoot}/src/**/*",
       "{projectRoot}/**/rollup.config.js",
