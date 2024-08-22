@@ -46,6 +46,7 @@
     "@types/lodash": "4.14.180",
     "@types/node": "22.2.0",
     "babel-jest": "29.7.0",
+    "babel-plugin-transform-import-meta": "2.2.0",
     "concurrently": "7.6.0",
     "depcheck": "1.4.7",
     "eslint": "8.35.0",
