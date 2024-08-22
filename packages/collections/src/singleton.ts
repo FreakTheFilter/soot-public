@@ -24,10 +24,7 @@ const EMPTY_SINGLETON_SENTINEL: unique symbol = Symbol();
 export type Factory<T> = () => T;
 export type AsyncFactory<T> = Factory<Promise<T>>;
 
-export type Getter<T> = flavor.Brand<
-  () => T,
-  'collection.singleton.Getter'
->;
+export type Getter<T> = flavor.Brand<() => T, 'collection.singleton.Getter'>;
 export type AsyncGetter<T> = Getter<Promise<T>>;
 
 /**
