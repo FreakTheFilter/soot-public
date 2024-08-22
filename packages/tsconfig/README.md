@@ -1,4 +1,4 @@
-# @hearth/tsconfig
+# @soot/tsconfig
 
 This repo contains common tsconfigs used elsewhere in the monorepo.
 
